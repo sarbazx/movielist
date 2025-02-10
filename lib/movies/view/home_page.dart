@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../widgets/movies_list.dart';
+import '../widgets/movies_search.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -19,6 +20,11 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MoviesList();
+    return const Column(
+      children: [
+        MoviesSearch(),
+        Expanded(child: MoviesList()),
+      ],
+    );
   }
 }
