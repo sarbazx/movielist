@@ -11,6 +11,7 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final client = Client.instance.client;
     return MultiBlocProvider(
       providers: [
         BlocProvider(
