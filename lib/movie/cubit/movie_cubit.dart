@@ -1,14 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../services/client.dart';
 import '../models/movie.dart';
 
 part 'movie_state.dart';
 
 class MovieCubit extends Cubit<MovieState> {
-  MovieCubit({required this.client}) : super(MovieLoading());
+  MovieCubit() : super(MovieLoading());
 
-  final Dio client;
+  final _client = Client.instance.client;
 
   Future<void> getMovie(String id) async {
     emit(MovieLoading());
@@ -23,7 +24,7 @@ class MovieCubit extends Cubit<MovieState> {
   }
 
   Future<Response> _fetchMovie(String id) {
-    return client.get(
+    return _client.get(
       '/',
       queryParameters: {'i': id},
     );

@@ -10,6 +10,10 @@ abstract class MoviesState {
   });
 }
 
+class MoviesInitial extends MoviesState {
+  MoviesInitial() : super();
+}
+
 class MoviesLoading extends MoviesState {
   const MoviesLoading({super.movies, super.hasReachedEnd});
 }

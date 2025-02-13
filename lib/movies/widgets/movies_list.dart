@@ -63,7 +63,8 @@ class _MoviesListState extends State<MoviesList> {
         }
 
         return RefreshIndicator(
-          onRefresh: () async => context.read<MoviesBloc>().add(GetMovies()),
+          onRefresh: () async =>
+              context.read<MoviesBloc>().add(RefreshMovies()),
           child: ListView.builder(
             controller: _scrollController,
             itemCount: state.movies.length + (state is MoviesLoading ? 1 : 0),

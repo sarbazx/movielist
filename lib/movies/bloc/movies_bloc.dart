@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../services/client.dart';
+import '../../services/database_client.dart';
 import '../models/movie.dart';
 
 part 'movies_event.dart';
@@ -10,29 +12,35 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   int _currentPage = 1;
   String _currentSearch = 'batman';
 
-  final Dio client;
+  final _client = Client.instance.client;
+  final _db = DatabaseClient.instance;
 
-  MoviesBloc({required this.client}) : super(const MoviesLoading()) {
+  MoviesBloc() : super(MoviesInitial()) {
     on<GetMovies>(_onGetMovies);
     on<LoadMoreMovies>(_onLoadMoreMovies);
+    on<RefreshMovies>(_onRefreshMovies);
+    on<SearchMovies>(_onSearchMovies);
   }
 
-  Future<void> _onGetMovies(
-    GetMovies event,
-    Emitter<MoviesState> emit,
-  ) async {
+  Future<void> _onGetMovies(GetMovies event, Emitter<MoviesState> emit) async {
+    emit(MoviesLoading(movies: state.movies));
     try {
-      emit(MoviesLoading());
-      _currentPage = 1;
-      _currentSearch = event.search;
+      final cachedMovies = await _db.getMovies();
+      if (cachedMovies.isNotEmpty) {
+        emit(MoviesLoaded(movies: cachedMovies, hasReachedEnd: false));
+        return;
+      }
 
-      final response = await _fetchMovies(_currentPage, _currentSearch);
+      final response = await _fetchMovies();
       if (response.statusCode == 200 && response.data['Response'] == 'True') {
         final body = response.data as Map;
         final searchResults = body['Search'] as List<dynamic>;
         final totalResults = int.parse(body['totalResults'] as String);
+
         final List<Movie> movies =
             searchResults.map((movie) => Movie.fromJson(movie)).toList();
+
+        await _db.insertMovies(movies);
 
         emit(
           MoviesLoaded(
@@ -40,11 +48,9 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
             hasReachedEnd: movies.length >= totalResults,
           ),
         );
-      } else {
-        emit(const MoviesLoaded(movies: [], hasReachedEnd: true));
       }
     } catch (e) {
-      emit(MoviesError(e));
+      emit(MoviesError(e, movies: state.movies));
     }
   }
 
@@ -63,7 +69,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
       );
       _currentPage++;
 
-      final response = await _fetchMovies(_currentPage, _currentSearch);
+      final response = await _fetchMovies();
       if (response.statusCode == 200 && response.data['Response'] == 'True') {
         final body = response.data as Map;
         final searchResults = body['Search'] as List<dynamic>;
@@ -84,13 +90,42 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     }
   }
 
-  Future<Response> _fetchMovies(int page, String search) {
-    return client.get(
+  Future<void> _onRefreshMovies(
+    RefreshMovies event,
+    Emitter<MoviesState> emit,
+  ) async {
+    emit(MoviesLoading(movies: []));
+    _currentPage = 1;
+    try {
+      await _db.deleteMovies();
+      await _onGetMovies(GetMovies(), emit);
+    } catch (e) {
+      emit(MoviesError(e, movies: state.movies));
+    }
+  }
+
+  Future<void> _onSearchMovies(
+    SearchMovies event,
+    Emitter<MoviesState> emit,
+  ) async {
+    emit(MoviesLoading(movies: state.movies));
+    try {
+      await _db.deleteMovies();
+      _currentPage = 1;
+      _currentSearch = event.search;
+      await _onGetMovies(GetMovies(), emit);
+    } catch (e) {
+      emit(MoviesError(e, movies: state.movies));
+    }
+  }
+
+  Future<Response> _fetchMovies() {
+    return _client.get(
       '/',
       queryParameters: {
-        'page': '$page',
+        'page': '$_currentPage',
         'type': 'movie',
-        's': search,
+        's': _currentSearch,
       },
     );
   }

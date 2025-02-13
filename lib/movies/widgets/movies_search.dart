@@ -27,7 +27,7 @@ class _MoviesSearchState extends State<MoviesSearch> {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
     _debounce = Timer(const Duration(milliseconds: 300), () {
       if (query.isNotEmpty && query.length > 2) {
-        context.read<MoviesBloc>().add(GetMovies(search: query));
+        context.read<MoviesBloc>().add(SearchMovies(search: query));
       }
     });
   }
