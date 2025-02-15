@@ -1,8 +1,10 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'movie/cubit/movie_cubit.dart';
 import 'movies/bloc/movies_bloc.dart';
+import 'theme/cubit/app_theme_cubit.dart';
 import 'router.dart';
 
 class App extends StatelessWidget {
@@ -18,10 +20,20 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (context) => MovieCubit(),
         ),
+        BlocProvider(
+          create: (context) => AppThemeCubit(),
+        )
       ],
-      child: MaterialApp.router(
-        debugShowCheckedModeBanner: false,
-        routerConfig: router,
+      child: BlocBuilder<AppThemeCubit, AppThemeState>(
+        builder: (context, state) {
+          return MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            routerConfig: router,
+            darkTheme: FlexThemeData.dark(),
+            theme: FlexThemeData.light(),
+            themeMode: state.theme,
+          );
+        },
       ),
     );
   }

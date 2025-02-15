@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'movie/cubit/widgets/theme_switcher.dart';
 
 import 'movie/view/view.dart';
 import 'movies/view/view.dart';
@@ -14,10 +15,9 @@ final router = GoRouter(
           appBar: AppBar(
             title: Text('MovieList'),
             leading: state.fullPath != '/'
-                ? BackButton(
-                    onPressed: () => context.pop(),
-                  )
+                ? BackButton(onPressed: () => context.pop())
                 : null,
+            actions: [ThemeSwitcher()],
           ),
           body: SafeArea(child: child),
         ),
