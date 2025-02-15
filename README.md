@@ -1,16 +1,37 @@
-# movielist
+# MovieList App
 
-A new Flutter project.
+A Flutter application for browsing movies.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- Browse movies
+- Search movies
+- View movie details
+- Toggle theme
 
-A few resources to get you started if this is your first Flutter project:
+## Setup
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+1. Clone the repository
+2. Create a `.env` file in the root of the project with the following variables:
+   - `MOVIES_API_KEY`: your API key for the OMDBAPI API
+   - `MOVIES_API_URL`: the URL for the OMDBAPI API
+3. Run `flutter pub get`
+4. Run `flutter run`
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Testing
+
+To run the tests, run `flutter test`
+
+## Linting
+
+To run the linting, run `flutter analyze`
+
+## Architecture
+
+The app is built using the Bloc pattern. App is divided in following way:
+
+- `lib/app.dart`: contains the main app file
+- `lib/movie`: contains the movie related files
+- `lib/movies`: contains the movies related files
+- `lib/theme`: contains the theme related files
+- `lib/router.dart`: contains the router for the app

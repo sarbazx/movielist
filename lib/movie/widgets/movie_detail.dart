@@ -9,8 +9,6 @@ class MovieDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
     return BlocBuilder<MovieCubit, MovieState>(
       builder: (context, state) {
         if (state is MovieLoading) {
