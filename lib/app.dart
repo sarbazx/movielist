@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'movie/cubit/movie_cubit.dart';
 import 'movies/bloc/movies_bloc.dart';
-import 'theme/cubit/app_theme_cubit.dart';
 import 'router.dart';
+import 'theme/cubit/app_theme_cubit.dart';
 
 class App extends StatelessWidget {
   const App({super.key});

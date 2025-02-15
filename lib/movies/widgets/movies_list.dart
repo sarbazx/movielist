@@ -67,21 +67,35 @@ class _MoviesListState extends State<MoviesList> {
         return RefreshIndicator(
           onRefresh: () async =>
               context.read<MoviesBloc>().add(RefreshMovies()),
-          child: ListView.builder(
-            controller: _scrollController,
-            itemCount: state.movies.length + (state is MoviesLoading ? 1 : 0),
-            itemBuilder: (context, index) {
-              if (index >= state.movies.length) {
-                return const Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-              }
-              return MoviesItem(movie: state.movies[index]);
-            },
-          ),
+          child: LayoutBuilder(builder: (context, constraints) {
+            if (constraints.maxWidth > 600) {
+              return GridView.builder(
+                controller: _scrollController,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 1.5,
+                ),
+                itemCount: state.movies.length,
+                itemBuilder: (context, index) =>
+                    MoviesItem(movie: state.movies[index]),
+              );
+            }
+            return ListView.builder(
+              controller: _scrollController,
+              itemCount: state.movies.length + (state is MoviesLoading ? 1 : 0),
+              itemBuilder: (context, index) {
+                if (index >= state.movies.length) {
+                  return const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
+                return MoviesItem(movie: state.movies[index]);
+              },
+            );
+          }),
         );
       },
     );

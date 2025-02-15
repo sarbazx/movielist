@@ -21,7 +21,7 @@ class MovieInfoSection extends StatelessWidget {
       right: 0,
       child: Container(
         width: size.width * 0.7,
-        height: 85,
+        height: size.width > 600 ? 120 : 85,
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.onInverseSurface,
           borderRadius: const BorderRadius.only(
@@ -59,6 +59,7 @@ class MovieInfoSection extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(height: size.width > 600 ? 14 : 8),
                 Container(
                   padding: EdgeInsets.all(8),
                   decoration: BoxDecoration(
@@ -69,18 +70,19 @@ class MovieInfoSection extends StatelessWidget {
                   child: Center(
                     child: Text(
                       metascore,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleSmall
-                          ?.copyWith(color: Colors.white),
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            color: Colors.white,
+                            fontSize: size.width * 0.035,
+                          ),
                     ),
                   ),
                 ),
-                SizedBox(height: size.height * 0.01),
+                SizedBox(height: 8),
                 Text(
                   'Metascore',
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
+                SizedBox(height: size.width > 600 ? 0 : 8),
               ],
             ),
             SizedBox(width: size.width * 0.05),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'movie/cubit/widgets/theme_switcher.dart';
 
+import 'movie/cubit/widgets/theme_switcher.dart';
 import 'movie/view/view.dart';
 import 'movies/view/view.dart';
 

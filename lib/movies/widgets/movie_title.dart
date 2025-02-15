@@ -12,54 +12,56 @@ class MovieTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      bottom: 0,
-      left: 0,
-      right: 0,
-      child: Container(
-        height: 250,
-        padding: EdgeInsets.only(
-          left: 16,
-          bottom: 16,
-          right: MediaQuery.of(context).size.width * 0.2,
-        ),
-        alignment: Alignment.bottomLeft,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          gradient: LinearGradient(
-            colors: [
-              Colors.grey.withAlpha(100),
-              Colors.black.withAlpha(40),
-              Colors.black.withAlpha(20),
-              Colors.black,
+    return LayoutBuilder(builder: (context, constraints) {
+      return Positioned(
+        bottom: 0,
+        left: 0,
+        right: 0,
+        child: Container(
+          height: 250,
+          padding: EdgeInsets.only(
+            left: 16,
+            bottom: 16,
+            right: MediaQuery.of(context).size.width * 0.2,
+          ),
+          alignment: Alignment.bottomLeft,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            gradient: LinearGradient(
+              colors: [
+                Colors.grey.withAlpha(100),
+                Colors.black.withAlpha(40),
+                Colors.black.withAlpha(20),
+                Colors.black,
+              ],
+              stops: [0, 0.1, 0.2, 1],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              Text(
+                year,
+                style: Theme.of(context)
+                    .textTheme
+                    .labelMedium
+                    ?.copyWith(color: Colors.white),
+              ),
             ],
-            stops: [0, 0.1, 0.2, 1],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
           ),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-            Text(
-              year,
-              style: Theme.of(context)
-                  .textTheme
-                  .labelMedium
-                  ?.copyWith(color: Colors.white),
-            ),
-          ],
-        ),
-      ),
-    );
+      );
+    });
   }
 }

@@ -20,36 +20,13 @@ class MovieDetail extends StatelessWidget {
         }
         if (state is MovieLoaded) {
           return SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: size.height * 0.67,
-                  width: double.infinity,
-                  child: Stack(
-                    children: [
-                      Container(
-                        height: size.height * 0.6,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(state.movie.poster),
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                      ),
-                      MovieInfoSection(
-                        rating: state.movie.imdbRating,
-                        metascore: state.movie.metascore,
-                        runtime: state.movie.runtime,
-                      ),
-                    ],
-                  ),
-                ),
-                MovieTitlePlot(
-                  title: state.movie.title,
-                  plot: state.movie.plot,
-                ),
-              ],
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                if (constraints.maxWidth > 600) {
+                  return LandscapeMovieDetail(movie: state.movie);
+                }
+                return PortraitMovieDetail(movie: state.movie);
+              },
             ),
           );
         }
