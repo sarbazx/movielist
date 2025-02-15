@@ -8,16 +8,19 @@ final router = GoRouter(
   initialLocation: HomePage.pagePath,
   routes: [
     ShellRoute(
-      builder: (context, state, child) => Scaffold(
-        appBar: AppBar(
-          title: Text('MovieList'),
-          leading: state.fullPath != '/'
-              ? BackButton(
-                  onPressed: () => context.pop(),
-                )
-              : null,
+      builder: (context, state, child) => HeroControllerScope(
+        controller: MaterialApp.createMaterialHeroController(),
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text('MovieList'),
+            leading: state.fullPath != '/'
+                ? BackButton(
+                    onPressed: () => context.pop(),
+                  )
+                : null,
+          ),
+          body: SafeArea(child: child),
         ),
-        body: child,
       ),
       routes: [HomePage.route, DetailPage.route],
     ),

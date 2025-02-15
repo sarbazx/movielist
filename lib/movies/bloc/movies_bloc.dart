@@ -10,7 +10,7 @@ part 'movies_state.dart';
 
 class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   int _currentPage = 1;
-  String _currentSearch = 'batman';
+  String _currentSearch = 'popular';
 
   final _client = Client.instance.client;
   final _db = DatabaseClient.instance;

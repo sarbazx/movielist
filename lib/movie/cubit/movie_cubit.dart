@@ -23,10 +23,12 @@ class MovieCubit extends Cubit<MovieState> {
     }
   }
 
+  Movie get currentMovie => (state as MovieLoaded).movie;
+
   Future<Response> _fetchMovie(String id) {
     return _client.get(
       '/',
-      queryParameters: {'i': id},
+      queryParameters: {'i': id, 'plot': 'full'},
     );
   }
 }

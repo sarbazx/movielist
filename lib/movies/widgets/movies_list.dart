@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/movies_bloc.dart';
-import 'movies_item.dart';
+import 'widgets.dart';
 
 class MoviesList extends StatefulWidget {
   const MoviesList({super.key});
@@ -50,13 +50,15 @@ class _MoviesListState extends State<MoviesList> {
         }
 
         if (state.movies.isEmpty) {
-          return const Center(
+          return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.no_photography_outlined, size: 100),
                 SizedBox(height: 16),
                 Text('No movies found'),
+                SizedBox(height: 16),
+                RefreshButton(),
               ],
             ),
           );
